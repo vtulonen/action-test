@@ -23,6 +23,8 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v2
+        with:
+            token: ${{ secrets.API_TOKEN_GITHUB }}
       - run: |
           git fetch --prune --unshallow
           git remote add remote_alias git@github.com:5G00BD88-3006-Innovaatioprojekti/Test-repo.git
