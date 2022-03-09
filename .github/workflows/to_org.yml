@@ -1,31 +1,22 @@
-# This is a basic workflow to help you get started with Actions
-
-name: Push to Org
-
-# Controls when the workflow will run
-on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+name: push to bitbucket
+on: push
 jobs:
-  # This workflow contains a single job called "push"
-  push:
-    # The type of runner that the job will run on
+  repo-sync:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: actions/checkout@v2
-        with:
-            token: ${{ secrets.API_TOKEN_GITHUB }}
-      - run: |
-          git remote add remote_alias git@github.com:5G00BD88-3006-Innovaatioprojekti/Test-repo.git
-          git push -f remote_alias main
-
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: '0'
+        ref: 'main'
+    - name: Install SSH key
+      uses: shimataro/ssh-key-action@v2
+      with:
+         key: ${{ secrets.SSH_PRIVATE_KEY }}
+         name: id_rsa # optional
+         known_hosts: ${{ secrets.KNOWN_HOSTS }}
+    - run: |
+        git remote add orgrepo git@github.com:5G00BD88-3006-Innovaatioprojekti/Test-repo.git
+        git config --global user.email " tulonenvili@gmail.com"
+        git config --global user.name "vtulonen"
+        git checkout main
+        git push -u orgrepo main
