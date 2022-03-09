@@ -26,7 +26,6 @@ jobs:
         with:
             token: ${{ secrets.API_TOKEN_GITHUB }}
       - run: |
-          git fetch --prune --unshallow
           git remote add remote_alias git@github.com:5G00BD88-3006-Innovaatioprojekti/Test-repo.git
           git push -f remote_alias main
 
